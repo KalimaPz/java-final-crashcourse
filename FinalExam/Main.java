@@ -9,7 +9,7 @@ public class Main {
     }
 }
 
-class Gui extends JFrame {
+class Gui extends JFrame implements ActionListener {
 
     private JPanel JP1 = new JPanel();
     private JPanel JP2 = new JPanel();
@@ -23,44 +23,26 @@ class Gui extends JFrame {
     private JButton clearButton = new JButton("Clear");
 
     private JTextArea Result = new JTextArea();
+
+    JOptionPane Error = new JOptionPane();
     
     Gui(){
 
         setTitle("Final Exam");
-        class ButtonListener implements ActionListener {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                int _Result = 0;
-                int a , b;
-                    a = Integer.parseInt(ValueA.getText());
-                    b = Integer.parseInt(ValueB.getText());
-
-                if(ae.getSource() == addButton) {
-                    _Result = addNumber(a,b);
-                    Result.append(ValueA.getText() + " + " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
-                }
-                if(ae.getSource() == subButton) {
-                    _Result = subtract(a,b);
-                    Result.append(ValueA.getText() + " - " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
-                }
-                if(ae.getSource() == clearButton){
-                    Result.setText("");
-                }
-            }
-        }
         // JP1 Start
             JP1.setLayout(new GridLayout(1,2));
             JP1.add(ValueA);
             JP1.add(ValueB);
+
         // JP1 End
         // JP2 Start
             JP2.setLayout(new FlowLayout(FlowLayout.CENTER));
             JP2.add(addButton);
-                addButton.addActionListener(new ButtonListener());
+                addButton.addActionListener(this);
             JP2.add(subButton);
-                subButton.addActionListener(new ButtonListener());
+                subButton.addActionListener(this);
             JP2.add(clearButton);
-                clearButton.addActionListener(new ButtonListener());
+                clearButton.addActionListener(this);
         // JP2 End
         //  JFrame SetLayout
             setLayout(new GridLayout(3,1));
@@ -77,24 +59,40 @@ class Gui extends JFrame {
     public int subtract(int x, int y){
         return x - y;
     }
+    void CheckInput() throws MaiTemException {
+        if(ValueA.getText().equals("") || ValueB.getText().equals("")) {
+            throw new MaiTemException();
+        }
+    }
 
-    // @Override
-    // public void actionPerformed(ActionEvent ae) {
-    //     int _Result = 0;
-    //     int a , b;
-    //         a = Integer.parseInt(ValueA.getText());
-    //         b = Integer.parseInt(ValueB.getText());
-    //     if(ae.getSource() == addButton) {
-    //         _Result = addNumber(a,b);
-    //         // System.out.println(Result);
-    //         Result.append(ValueA.getText() + " + " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
-    //     }
-    //     if(ae.getSource() == subButton) {
-    //         _Result = subtract(a, b);
-    //         Result.append(ValueA.getText() + " - " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
-    //     }
-    //     if(ae.getSource() == clearButton){
-    //         Result.setText("");
-    //     }
-    // }
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        try{
+        CheckInput();
+        int _Result = 0;
+        int a , b;
+            a = Integer.parseInt(ValueA.getText());
+            b = Integer.parseInt(ValueB.getText());
+        if(ae.getSource() == addButton) {
+            _Result = addNumber(a,b);
+            // System.out.println(Result);
+            Result.append(ValueA.getText() + " + " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
+        }
+        if(ae.getSource() == subButton) {
+            _Result = subtract(a, b);
+            Result.append(ValueA.getText() + " - " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
+        }
+        if(ae.getSource() == clearButton){
+            Result.setText("");
+        }
+        }
+
+        catch(MaiTemException Mte){
+            System.out.println("Mai Tem");
+            Error.showMessageDialog(null, "alert", "alert", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(NumberFormatException Nfe){
+            System.out.println("Not Integer");
+        }
+    }
 }
