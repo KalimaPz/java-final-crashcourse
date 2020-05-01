@@ -9,7 +9,7 @@ public class Main {
     }
 }
 
-class Gui extends JFrame implements ActionListener {
+class Gui extends JFrame {
 
     private JPanel JP1 = new JPanel();
     private JPanel JP2 = new JPanel();
@@ -36,11 +36,37 @@ class Gui extends JFrame implements ActionListener {
         // JP2 Start
             JP2.setLayout(new FlowLayout(FlowLayout.CENTER));
             JP2.add(addButton);
-                addButton.addActionListener(this);
+                addButton.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        int a , b;
+                        a = Integer.parseInt(ValueA.getText());
+                        b = Integer.parseInt(ValueB.getText());
+                        int _Result = 0;
+                        _Result = addNumber(a, b);
+                        Result.append(ValueA.getText() + " + " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
+                    }
+                });
             JP2.add(subButton);
-                subButton.addActionListener(this);
+                subButton.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        int a , b;
+                        a = Integer.parseInt(ValueA.getText());
+                        b = Integer.parseInt(ValueB.getText());
+                        int _Result = 0;
+                        _Result = subtract(a, b);
+                        Result.append(ValueA.getText() + " - " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
+                    }
+                });
             JP2.add(clearButton);
-                clearButton.addActionListener(this);
+                clearButton.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        Result.setText("");
+                    }
+                });
+                
         // JP2 End
         //  JFrame SetLayout
             setLayout(new GridLayout(3,1));
@@ -58,23 +84,23 @@ class Gui extends JFrame implements ActionListener {
         return x - y;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-        int _Result = 0;
-        int a , b;
-            a = Integer.parseInt(ValueA.getText());
-            b = Integer.parseInt(ValueB.getText());
-        if(ae.getSource() == addButton) {
-            _Result = addNumber(a,b);
-            // System.out.println(Result);
-            Result.append(ValueA.getText() + " + " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
-        }
-        if(ae.getSource() == subButton) {
-            _Result = subtract(a, b);
-            Result.append(ValueA.getText() + " - " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
-        }
-        if(ae.getSource() == clearButton){
-            Result.setText("");
-        }
-    }
+    // @Override
+    // public void actionPerformed(ActionEvent ae) {
+    //     int _Result = 0;
+    //     int a , b;
+    //         a = Integer.parseInt(ValueA.getText());
+    //         b = Integer.parseInt(ValueB.getText());
+    //     if(ae.getSource() == addButton) {
+    //         _Result = addNumber(a,b);
+    //         // System.out.println(Result);
+    //         Result.append(ValueA.getText() + " + " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
+    //     }
+    //     if(ae.getSource() == subButton) {
+    //         _Result = subtract(a, b);
+    //         Result.append(ValueA.getText() + " - " + ValueB.getText() + " = " + Integer.toString(_Result)+"\n");
+    //     }
+    //     if(ae.getSource() == clearButton){
+    //         Result.setText("");
+    //     }
+    // }
 }
